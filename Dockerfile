@@ -7,4 +7,4 @@ COPY . .
 
 EXPOSE 8000
 
-CMD ["sh",  "go run ./cmd/app"]
+CMD ["sh","-c",  "go run ./cmd/app"]
