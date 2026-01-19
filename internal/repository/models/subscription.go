@@ -13,6 +13,12 @@ type Subscription struct {
 	UserID      string
 	StartDate   time.Time
 }
+type SubscriptionUpdate struct {
+	ServiceName *string
+	Price       *int
+	UserID      *string
+	StartDate   *time.Time
+}
 
 func SubscriptionDomainToModel(d *domain.Subscription) *Subscription {
 	return &Subscription{
