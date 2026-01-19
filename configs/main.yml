@@ -1,0 +1,9 @@
+http:
+  port: 8000
+  maxHeaderBytes: 1
+  readTimeout: 10s
+  writeTimeout: 10s
+postgres:
+  host: db
+  port: 5432
+  sslmode: disable
