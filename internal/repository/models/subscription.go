@@ -19,6 +19,12 @@ type SubscriptionUpdate struct {
 	UserID      *string
 	StartDate   *time.Time
 }
+type GetAllSubscriptionsFilter struct {
+	Limit       *int
+	Offset      *int
+	UserID      *string
+	ServiceName *string
+}
 
 func SubscriptionDomainToModel(d *domain.Subscription) *Subscription {
 	return &Subscription{
