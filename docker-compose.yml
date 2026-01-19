@@ -32,3 +32,18 @@ services:
       POSTGRES_DB: "${POSTGRES_DB:-subscription-aggregator}"
     volumes:
       - ./configs:/app/configs:ro
+
+    migrate: 
+      image: migrate/migrate 
+      volumes:
+        - ./migrations:/migrations
+      environment:
+        POSTGRES_USER: "${POSTGRES_USER:-scmbr}"
+        POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-subscription-aggregator}"
+        POSTGRES_DB: "${POSTGRES_DB:-subscription-aggregator}"
+      command: ["-path", "/migrations", "-database", "postgres://${POSTGRES_USER:-scmbr}:${POSTGRES_PASSWORD:-subscription-aggregator}@db:5432/${POSTGRES_DB:-subscription-aggregator}?sslmode=disable", "up"]
+      links: 
+        - db
+      depends_on:
+        db:
+          condition: service_healthy
