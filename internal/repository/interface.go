@@ -10,10 +10,11 @@ import (
 
 type SubscriptionRepository interface {
 	Create(ctx context.Context, input *domain.Subscription) error
-	GetAll(ctx context.Context, filter models.GetAllSubscriptionsFilter) ([]*domain.Subscription, int, error)
+	GetAll(ctx context.Context, limit, ofset int) ([]*domain.Subscription, int, error)
 	GetById(ctx context.Context, id string) (*domain.Subscription, error)
 	Update(ctx context.Context, id string, input models.SubscriptionUpdate) error
 	Delete(ctx context.Context, id string) error
+	GetTotalPrice(ctx context.Context, filter models.GetTotalPriceFilter) (int, error)
 }
 type Repository struct {
 	Subscription SubscriptionRepository

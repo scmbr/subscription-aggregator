@@ -21,9 +21,7 @@ type SubscriptionUpdate struct {
 	StartDate   *time.Time
 	EndDate     *time.Time
 }
-type GetAllSubscriptionsFilter struct {
-	Limit       *int
-	Offset      *int
+type GetTotalPriceFilter struct {
 	UserID      *string
 	ServiceName *string
 	StartDate   *time.Time

@@ -31,58 +31,34 @@ func (r *SubscriptionRepo) Create(ctx context.Context, input *domain.Subscriptio
 	}
 	return nil
 }
-func (r *SubscriptionRepo) GetAll(ctx context.Context, filter models.GetAllSubscriptionsFilter) ([]*domain.Subscription, int, error) {
+func (r *SubscriptionRepo) GetAll(ctx context.Context, limit, offset int) ([]*domain.Subscription, int, error) {
 	query := `SELECT id, service_name, price, user_id, start_date, end_date
               FROM subscriptions`
-	where := []string{}
 
-	filterArgs := []interface{}{}
-	if filter.UserID != nil {
-		where = append(where, "user_id = ?")
-		filterArgs = append(filterArgs, *filter.UserID)
-	}
-	if filter.ServiceName != nil {
-		where = append(where, "service_name = ?")
-		filterArgs = append(filterArgs, *filter.ServiceName)
-	}
-	if filter.StartDate != nil {
-		where = append(where, "start_date <= ?")
-		filterArgs = append(filterArgs, *filter.StartDate)
-	}
-	if filter.EndDate != nil {
-		where = append(where, "end_date >= ?")
-		filterArgs = append(filterArgs, *filter.EndDate)
-	}
-	if len(where) > 0 {
-		query += " WHERE " + strings.Join(where, " AND ")
-	}
+	args := []interface{}{}
 
-	args := append([]interface{}{}, filterArgs...)
-	if filter.Limit != nil {
+	if limit > 0 {
 		query += " LIMIT ?"
-		args = append(args, *filter.Limit)
+		args = append(args, limit)
 	}
-	if filter.Offset != nil {
+	if offset > 0 {
 		query += " OFFSET ?"
-		args = append(args, *filter.Offset)
+		args = append(args, offset)
 	}
 
 	countQuery := "SELECT COUNT(*) FROM subscriptions"
-	if len(where) > 0 {
-		countQuery += " WHERE " + strings.Join(where, " AND ")
-	}
 
 	query = sqlx.Rebind(sqlx.DOLLAR, query)
 	countQuery = sqlx.Rebind(sqlx.DOLLAR, countQuery)
 
 	subscriptions := make([]*models.Subscription, 0)
 	if err := r.db.SelectContext(ctx, &subscriptions, query, args...); err != nil {
-		return nil, 0, fmt.Errorf("subscriptionRepo.GetAll:%w", err)
+		return nil, 0, fmt.Errorf("subscriptionRepo.GetAll: %w", err)
 	}
 
 	var count int
-	if err := r.db.GetContext(ctx, &count, countQuery, filterArgs...); err != nil {
-		return nil, 0, fmt.Errorf("subscriptionRepo.GetAll:%w", err)
+	if err := r.db.GetContext(ctx, &count, countQuery); err != nil {
+		return nil, 0, fmt.Errorf("subscriptionRepo.GetAll: %w", err)
 	}
 
 	subscriptionsDomain := make([]*domain.Subscription, 0, len(subscriptions))
@@ -153,4 +129,39 @@ func (r *SubscriptionRepo) Delete(ctx context.Context, id string) error {
 	}
 
 	return nil
+}
+func (r *SubscriptionRepo) GetTotalPrice(ctx context.Context, filter models.GetTotalPriceFilter) (int, error) {
+	query := `SELECT COALESCE(SUM(price), 0) FROM subscriptions`
+	where := []string{}
+	args := []interface{}{}
+
+	if filter.UserID != nil {
+		where = append(where, "user_id = ?")
+		args = append(args, *filter.UserID)
+	}
+	if filter.ServiceName != nil {
+		where = append(where, "service_name = ?")
+		args = append(args, *filter.ServiceName)
+	}
+	if filter.StartDate != nil {
+		where = append(where, "start_date <= ?")
+		args = append(args, *filter.StartDate)
+	}
+	if filter.EndDate != nil {
+		where = append(where, "end_date >= ?")
+		args = append(args, *filter.EndDate)
+	}
+
+	if len(where) > 0 {
+		query += " WHERE " + strings.Join(where, " AND ")
+	}
+
+	query = sqlx.Rebind(sqlx.DOLLAR, query)
+
+	var total int
+	if err := r.db.GetContext(ctx, &total, query, args...); err != nil {
+		return 0, fmt.Errorf("subscriptionRepo.GetTotalPrice: %w", err)
+	}
+
+	return total, nil
 }
