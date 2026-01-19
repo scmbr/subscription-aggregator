@@ -8,4 +8,5 @@ type Subscription struct {
 	Price       int
 	UserID      string
 	StartDate   time.Time
+	EndDate     *time.Time
 }

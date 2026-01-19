@@ -12,12 +12,14 @@ type Subscription struct {
 	Price       int
 	UserID      string
 	StartDate   time.Time
+	EndDate     *time.Time
 }
 type SubscriptionUpdate struct {
 	ServiceName *string
 	Price       *int
 	UserID      *string
 	StartDate   *time.Time
+	EndDate     *time.Time
 }
 type GetAllSubscriptionsFilter struct {
 	Limit       *int
