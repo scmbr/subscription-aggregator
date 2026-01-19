@@ -26,6 +26,8 @@ type GetAllSubscriptionsFilter struct {
 	Offset      *int
 	UserID      *string
 	ServiceName *string
+	StartDate   *time.Time
+	EndDate     *time.Time
 }
 
 func SubscriptionDomainToModel(d *domain.Subscription) *Subscription {

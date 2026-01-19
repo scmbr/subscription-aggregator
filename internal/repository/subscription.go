@@ -45,7 +45,14 @@ func (r *SubscriptionRepo) GetAll(ctx context.Context, filter models.GetAllSubsc
 		where = append(where, "service_name = ?")
 		filterArgs = append(filterArgs, *filter.ServiceName)
 	}
-
+	if filter.StartDate != nil {
+		where = append(where, "start_date <= ?")
+		filterArgs = append(filterArgs, *filter.StartDate)
+	}
+	if filter.EndDate != nil {
+		where = append(where, "end_date >= ?")
+		filterArgs = append(filterArgs, *filter.EndDate)
+	}
 	if len(where) > 0 {
 		query += " WHERE " + strings.Join(where, " AND ")
 	}
