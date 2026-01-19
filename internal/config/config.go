@@ -32,6 +32,9 @@ type (
 func Init(configsDir string) (*Config, error) {
 	viper.AddConfigPath(configsDir)
 	viper.SetConfigName("main")
+	if err := viper.ReadInConfig(); err != nil {
+		return nil, err
+	}
 	var cfg Config
 	if err := unmarshal(&cfg); err != nil {
 		return nil, err
