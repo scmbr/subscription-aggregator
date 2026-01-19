@@ -15,10 +15,10 @@ type GetAllSubscriptionsInput struct {
 }
 type GetAllSubscriptionsOutput struct {
 	Total         int
-	Subscriptions []GetSubscriptionOutput
+	Subscriptions []*GetSubscriptionOutput
 }
 type GetSubscriptionOutput struct {
-	ID          int
+	ID          string
 	ServiceName string
 	Price       int
 	UserID      string
