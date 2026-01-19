@@ -8,8 +8,8 @@ import (
 )
 
 type SubscriptionService interface {
-	CreateSubscription(ctx context.Context, input *dto.CreateSubscriptionInput) error
-	GetAllSubscriptions(ctx context.Context, input *dto.GetAllSubscriptionsInput) (*dto.GetAllSubscriptionsOutput, error)
+	CreateSubscription(ctx context.Context, input *dto.CreateSubscriptionInput) (string, error)
+	GetAllSubscriptions(ctx context.Context, input dto.GetAllSubscriptionsInput) (*dto.GetAllSubscriptionsOutput, error)
 	GetSubscriptionById(ctx context.Context, id string) (*dto.GetSubscriptionOutput, error)
 	UpdateSubscriptionById(ctx context.Context, id string, input *dto.UpdateSubscriptionInput) error
 	DeleteSubscriptionById(ctx context.Context, id string) error
