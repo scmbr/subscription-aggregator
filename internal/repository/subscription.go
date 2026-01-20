@@ -130,8 +130,15 @@ func (r *SubscriptionRepo) Delete(ctx context.Context, id string) error {
 
 	return nil
 }
-func (r *SubscriptionRepo) GetTotalPrice(ctx context.Context, filter models.GetTotalPriceFilter) (int, error) {
-	query := `SELECT COALESCE(SUM(price), 0) FROM subscriptions`
+func (r *SubscriptionRepo) GetTotalPrice(
+	ctx context.Context,
+	filter models.GetTotalPriceFilter,
+) (int, error) {
+
+	query := `
+		SELECT COALESCE(SUM(price), 0)
+		FROM subscriptions
+	`
 	where := []string{}
 	args := []interface{}{}
 
@@ -139,23 +146,22 @@ func (r *SubscriptionRepo) GetTotalPrice(ctx context.Context, filter models.GetT
 		where = append(where, "user_id = ?")
 		args = append(args, *filter.UserID)
 	}
+
 	if filter.ServiceName != nil {
 		where = append(where, "service_name = ?")
 		args = append(args, *filter.ServiceName)
 	}
-	if filter.StartDate != nil {
-		where = append(where, "start_date <= ?")
-		args = append(args, *filter.StartDate)
-	}
-	if filter.EndDate != nil {
-		where = append(where, "end_date >= ?")
-		args = append(args, *filter.EndDate)
-	}
 
-	if len(where) > 0 {
-		query += " WHERE " + strings.Join(where, " AND ")
-	}
+	where = append(where, "start_date <= ?")
+	args = append(args, *filter.EndDate)
 
+	where = append(
+		where,
+		"(end_date >= ? OR end_date IS NULL)",
+	)
+	args = append(args, *filter.StartDate)
+
+	query += " WHERE " + strings.Join(where, " AND ")
 	query = sqlx.Rebind(sqlx.DOLLAR, query)
 
 	var total int

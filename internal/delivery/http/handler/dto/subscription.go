@@ -31,10 +31,10 @@ type UpdateSubscriptionRequest struct {
 }
 
 type GetTotalPriceRequest struct {
-	UserID      *string   `form:"user_id"`
-	ServiceName *string   `form:"service_name"`
-	StartDate   MonthYear `form:"start_date" binding:"required"`
-	EndDate     MonthYear `form:"end_date" binding:"required"`
+	UserID      *string    `form:"user_id"`
+	ServiceName *string    `form:"service_name"`
+	StartDate   *MonthYear `form:"start_date" binding:"required"`
+	EndDate     *MonthYear `form:"end_date" binding:"required"`
 }
 type GetTotalPriceResponse struct {
 	TotalPrice int `json:"total_price"`

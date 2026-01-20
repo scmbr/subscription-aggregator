@@ -22,7 +22,7 @@ func (h *Handler) initSubscriptionsRoutes(api *gin.RouterGroup) {
 		subscriptions.GET("/:id", h.getSubscriptionById)
 		subscriptions.PUT("/:id", h.updateSubscriptionById)
 		subscriptions.DELETE("/:id", h.deleteSubscriptionById)
-		subscriptions.GET("/:id", h.getSubscriptionTotalPrice)
+		subscriptions.GET("/total", h.getSubscriptionTotalPrice)
 	}
 }
 func (h *Handler) createSubscription(c *gin.Context) {
@@ -226,12 +226,25 @@ func (h *Handler) getSubscriptionTotalPrice(c *gin.Context) {
 			return
 		}
 	}
-
+	var startDate *time.Time
+	if input.StartDate != nil {
+		startDate = &input.StartDate.Time
+	}
+	var endDate *time.Time
+	if input.EndDate != nil {
+		endDate = &input.EndDate.Time
+	}
+	logger.Debug("handler data:", map[string]interface{}{
+		"user_id":      input.UserID,
+		"service_name": input.ServiceName,
+		"start_date":   startDate,
+		"end_date":     endDate,
+	})
 	total, err := h.service.Subscription.GetSubscriptionsTotalPrice(c.Request.Context(), &service_dto.GetTotalPriceInput{
 		UserID:      input.UserID,
 		ServiceName: input.ServiceName,
-		StartDate:   &input.StartDate.Time,
-		EndDate:     &input.EndDate.Time,
+		StartDate:   startDate,
+		EndDate:     endDate,
 	})
 	if err != nil {
 		logger.Error("error occurred while getting total price", err, map[string]interface{}{

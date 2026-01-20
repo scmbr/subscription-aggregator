@@ -7,25 +7,27 @@ import (
 )
 
 type Subscription struct {
-	Id          string
-	ServiceName string
-	Price       int
-	UserID      string
-	StartDate   time.Time
-	EndDate     *time.Time
+	Id          string     `db:"id"`
+	ServiceName string     `db:"service_name"`
+	Price       int        `db:"price"`
+	UserID      string     `db:"user_id"`
+	StartDate   time.Time  `db:"start_date"`
+	EndDate     *time.Time `db:"end_date"`
 }
+
 type SubscriptionUpdate struct {
-	ServiceName *string
-	Price       *int
-	UserID      *string
-	StartDate   *time.Time
-	EndDate     *time.Time
+	ServiceName *string    `db:"service_name"`
+	Price       *int       `db:"price"`
+	UserID      *string    `db:"user_id"`
+	StartDate   *time.Time `db:"start_date"`
+	EndDate     *time.Time `db:"end_date"`
 }
+
 type GetTotalPriceFilter struct {
-	UserID      *string
-	ServiceName *string
-	StartDate   *time.Time
-	EndDate     *time.Time
+	UserID      *string    `db:"user_id"`
+	ServiceName *string    `db:"service_name"`
+	StartDate   *time.Time `db:"start_date"`
+	EndDate     *time.Time `db:"end_date"`
 }
 
 func SubscriptionDomainToModel(d *domain.Subscription) *Subscription {
