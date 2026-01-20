@@ -1,0 +1,153 @@
+{
+  "info": {
+    "_postman_id": "b877b3f8-27d1-4039-aa2f-915e5bf6e0f7",
+    "name": "Subscription",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Create",
+      "id": "b73cf7ed-b8ef-4978-81ad-f3ee77118923",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"service_name\": \"Netflix\",\r\n  \"price\": 650,\r\n  \"user_id\": \"60601fee-2bf1-4721-ae6f-7636e79a0cba\",\r\n  \"start_date\": \"10-2025\"\r\n}\r\n",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}",
+          "host": [
+            "{{base_url}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GetAll",
+      "id": "faf618ce-d5f1-4124-adaa-14f43d2350b6",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}",
+          "host": [
+            "{{base_url}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GetByID",
+      "id": "dd8d7d52-c5f7-484b-8c53-c78dde52374f",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/f97a0999-92f4-4788-aefc-f46c2a5bb3bb",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "f97a0999-92f4-4788-aefc-f46c2a5bb3bb"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GetTotalPrice",
+      "id": "4550d454-ae71-428b-9080-200f6ed48989",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/total?user_id=60601fee-2bf1-4721-ae6f-7636e79a0cba&start_date=\"01-2025\"&end_date=\"12-2025\"",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "total"
+          ],
+          "query": [
+            {
+              "key": "user_id",
+              "value": "60601fee-2bf1-4721-ae6f-7636e79a0cba",
+              "uuid": "2d87c9f3-0fd9-466e-a366-ac03e08e893f"
+            },
+            {
+              "key": "start_date",
+              "value": "\"01-2025\"",
+              "uuid": "7374ceae-f194-469d-aaf7-199a09486b2a"
+            },
+            {
+              "key": "end_date",
+              "value": "\"12-2025\"",
+              "uuid": "e45acfab-ef2d-45df-adf0-1b277efdc86f"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Update",
+      "id": "bc2381d1-2d7f-41a2-9dc1-0bf5b1595f7e",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"price\": 500\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/f97a0999-92f4-4788-aefc-f46c2a5bb3bb",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "f97a0999-92f4-4788-aefc-f46c2a5bb3bb"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete",
+      "id": "964072a0-b61f-4d7f-bbc4-c86dfcc08d1f",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/f97a0999-92f4-4788-aefc-f46c2a5bb3bb",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "f97a0999-92f4-4788-aefc-f46c2a5bb3bb"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "id": "25c1aca0-3de2-4228-99d5-561eb05c21e6",
+      "key": "base_url",
+      "value": ""
+    }
+  ]
+}
